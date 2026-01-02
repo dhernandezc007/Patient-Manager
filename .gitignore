@@ -1,0 +1,13 @@
+notepad .gitignore
+```
+
+Paste this into the notepad that opens:
+```
+## Ignore Visual Studio temporary files
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
