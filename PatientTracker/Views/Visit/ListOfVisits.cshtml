@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Visit>
+
+@{
+    ViewData["Title"] = "All Visits";
+}
+
+<div class="container">
+    <h1>Patient Visits</h1>
+    <p>
+        <a asp-action="ScheduleVisit" class="btn btn-primary">Schedule New Visit</a>
+    </p>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>Visit Date</th>
+                    <th>Visit Type</th>
+                    <th>Status</th>
+                    <th>Reason</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var visit in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (visit.Patient != null)
+                            {
+                                @visit.Patient.FirstName @visit.Patient.LastName
+                            }
+                            else
+                            {
+                                <span class="text-muted">Unknown Patient</span>
+                            }
+                        </td>
+                        <td>@visit.VisitDate.ToString("MM/dd/yyyy hh:mm tt")</td>
+                        <td>@visit.VisitType</td>
+                        <td>
+                            <span class="badge bg-@(visit.Status == "Completed" ? "success" : visit.Status == "Scheduled" ? "primary" : visit.Status == "Cancelled" ? "danger" : "secondary")">
+                                @visit.Status
+                            </span>
+                        </td>
+                        <td>@visit.ReasonForVisit</td>
+                        <td>
+                            <a asp-action="VisitDetails" asp-route-id="@visit.VisitId" class="btn btn-sm btn-info">View</a>
+                            @if (visit.Status == "Scheduled")
+                            {
+                                <a asp-action="CompleteVisit" asp-route-id="@visit.VisitId" class="btn btn-sm btn-success">Complete</a>
+                                <a asp-action="CancelVisit" asp-route-id="@visit.VisitId" class="btn btn-sm btn-danger">Cancel</a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <h4>No visits scheduled yet</h4>
+            <p>Click "Schedule New Visit" to create your first visit.</p>
+        </div>
+    }
+</div>

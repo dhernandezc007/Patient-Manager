@@ -3,6 +3,7 @@ wwwroot\favicon.ico
 wwwroot\images\chestpain.jpg
 wwwroot\images\headache.jpg
 wwwroot\images\muscleache.jpg
+wwwroot\images\welcome.jpg
 wwwroot\js\site.js
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map

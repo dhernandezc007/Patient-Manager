@@ -1,0 +1,94 @@
+﻿@model Visit
+
+@{
+    ViewData["Title"] = "Schedule Visit";
+}
+
+<div class="container">
+    <h1>Schedule Visit</h1>
+
+    @if (ViewBag.PatientName != null)
+    {
+        <div class="alert alert-info">
+            Scheduling visit for: <strong>@ViewBag.PatientName</strong>
+        </div>
+    }
+
+    <form asp-action="ScheduleVisit" method="post">
+        <div class="mb-3">
+            <label asp-for="PatientId" class="form-label">Patient</label>
+            @if (ViewBag.PatientName != null)
+            {
+                <input asp-for="PatientId" type="hidden" />
+                <input type="text" class="form-control" value="@ViewBag.PatientName" disabled />
+            }
+            else
+            {
+                <select asp-for="PatientId" class="form-select" required>
+                    <option value="">-- Select Patient --</option>
+                    @foreach (var patient in ViewBag.Patients)
+                    {
+                        <option value="@patient.Id">@patient.FirstName @patient.LastName</option>
+                    }
+                </select>
+            }
+            <span asp-validation-for="PatientId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="VisitDate" class="form-label">Visit Date & Time</label>
+            <input asp-for="VisitDate" type="datetime-local" class="form-control" required />
+            <span asp-validation-for="VisitDate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="VisitType" class="form-label">Visit Type</label>
+            <select asp-for="VisitType" class="form-select" required>
+                <option value="">-- Select Visit Type --</option>
+                <option value="Check-up">Check-up</option>
+                <option value="Follow-up">Follow-up</option>
+                <option value="Emergency">Emergency</option>
+                <option value="Consultation">Consultation</option>
+                <option value="Procedure">Procedure</option>
+                <option value="Lab Work">Lab Work</option>
+                <option value="Other">Other</option>
+            </select>
+            <span asp-validation-for="VisitType" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ReasonForVisit" class="form-label">Reason for Visit</label>
+            <textarea asp-for="ReasonForVisit" class="form-control" rows="3" required></textarea>
+            <span asp-validation-for="ReasonForVisit" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Duration" class="form-label">Duration (minutes)</label>
+            <input asp-for="Duration" type="number" class="form-control" min="15" max="240" value="30" />
+            <span asp-validation-for="Duration" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ProviderId" class="form-label">Provider ID (Optional)</label>
+            <input asp-for="ProviderId" type="text" class="form-control" />
+            <span asp-validation-for="ProviderId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Notes" class="form-label">Additional Notes</label>
+            <textarea asp-for="Notes" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Notes" class="text-danger"></span>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Schedule Visit</button>
+            <a asp-action="ListOfVisits" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
